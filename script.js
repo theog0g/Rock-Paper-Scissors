@@ -1,58 +1,115 @@
 const options = ["Rock", "Paper", "Scissors"];
 
-let playerScore = 0; 
+const button = document.querySelectorAll(".option");
+const result = document.querySelector(".result");
+const para = document.createElement("p");
+const player = document.querySelector("#player-score");
+const computer = document.querySelector("#computer-score");
+const startBtn = document.querySelector("#start");
+const resetBtn = document.querySelector("#reset");
+
+
+
+let game;
+
 let computerScore = 0;
+let playerScore = 0;
+
+button.forEach((btn) => btn.addEventListener("click", () => {
+    let getUserChoice = btn.textContent;
+    game = playRound(getUserChoice ,getComputerChoice());
+    if (game) {
+        playerScore++;
+        player.textContent = `Player Score: ${playerScore}`;
+        console.log(game);
+    }else {
+        computerScore++;
+        computer.textContent = `Computer Score: ${computerScore}`;
+    }
+    
+    if (playerScore == 5) {
+        result.textContent = "You are the Winner";
+    }else if (computerScore == 5) {
+        result.textContent = "Computer Win! You are the Loser";
+    }
+}
+));
+
+startBtn.addEventListener("click", () => {
+    
+    player.textContent = `Player Score: ${playerScore}`;
+    computer.textContent = `Computer Score: ${computerScore}`;
+
+});
+
+
+resetBtn.addEventListener("click", () => {
+    computerScore = 0;
+    playerScore = 0;
+    result.textContent = "";
+});
+
+
+
+
+
+    
+
+
 
 function getComputerChoice() {
     let choice = Math.floor(Math.random() * 3);
     return options[choice];
 }
 
-function getUserChoice() {
-    let userOption = prompt(`Enter ${options[0]} or ${options[1]} or ${options[2]}`);
-    return userOption;
-}
-
-
 function playRound(playerSelection, computerSelection) {
   // your code here!
+    
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
     switch(playerSelection) {
         case "rock":
             if (computerSelection == "paper") {
-                console.log("You Lose! Paper beats Rock");
+                para.textContent = "You Lose! Paper beats Rock";
+                result.appendChild(para);
                 return false;
-                
             }else if (computerSelection == "scissors"){
-                console.log("You Win! Rock beats Scissors");
+                para.textContent = "You Win! Rock beats Scissors";
+                result.appendChild(para);
                 return true;
             }else {
-                console.log("It's a Tie!");
+                para.textContent = "It's a Tie!";
+                result.appendChild(para);
                 return undefined;
             }
             break;
         case "paper":
             if (computerSelection == "rock") {
-                console.log("You Win! Paper beats Rock");
+                para.textContent = "You Win! Paper beats Rock";
+                result.appendChild(para);
                 return true;
             }else if (computerSelection == "scissors"){
-                console.log("You Lose! Scissors beats Paper");
+                para.textContent = "You Lose! Scissors beats Paper";
+                result.appendChild(para);
                 return false;
             }else {
-                console.log("It's a Tie!");
+                para.textContent = "It's a Tie!";
+                result.appendChild(para);
                 return undefined;
             }
             break;
         default:
             if (computerSelection == "rock") {
-                console.log("You Lose! Rock beats Scissors");
+                para.textContent = "You Lose! Rock beats Scissors";
+                result.appendChild(para);
                 return false;
             }else if (computerSelection == "scissors"){
-                console.log("It's a Tie!");
+                para.textContent = "It's a Tie!";
+                result.appendChild(para);
                 return undefined;
             }else {
-                console.log("You Win! Scissors beats Paper");
+                para.textContent = "You Win! Scissors beats Paper";
+                result.appendChild(para);
                 return true;
             }
             break; 
@@ -60,21 +117,4 @@ function playRound(playerSelection, computerSelection) {
         
 }
 
-for (let i = 0; i < 5; i++) {
-    let result = playRound(getUserChoice(), getComputerChoice());
-    if (result) {
-        playerScore++;
-        console.log(`Your Score: ${playerScore}`);
-    }else if (result == undefined) {
-        console.log("It's a Tie!");
-    }else {
-        computerScore++;
-        console.log(`Your Score: ${playerScore}`);
-    }
-}
 
-if (playerScore > computerScore) {
-    alert(`Victory!!! Your final score is ${playerScore}`);
-}else{
-    alert(`Defeat!!! Your final score is ${playerScore}`);
-}
